@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -8,98 +8,120 @@ import {
   StyleSheet,
   Pressable,
 } from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import ActionSheet from 'react-native-actions-sheet';
 import CloseIcon from '../../assests/icons/close.png';
+import Toast, {BaseToast} from 'react-native-toast-message';
+import {addTransaction, setBalance} from '../../Redux/transactionSlice';
+import NumPad from './NumPad';
 
 const {width, height} = Dimensions.get('window');
 
-const numPad = [
-  {
-    value: 1,
-  },
-  {
-    value: 2,
-  },
-  {
-    value: 3,
-  },
-  {
-    value: 4,
-  },
-  {
-    value: 5,
-  },
-  {
-    value: 6,
-  },
-  {
-    value: 7,
-  },
-  {
-    value: 8,
-  },
-  {
-    value: 9,
-  },
-  {
-    value: '.',
-  },
-  {
-    value: 0,
-  },
-  {
-    value: 'back',
-  },
-];
+const toastConfig = {
+  info: props => <BaseToast {...props} style={{borderLeftColor: '#FAAD39'}} />,
+};
 
-const Header = ({sheetRef}) => (
+const Header = ({sheetRef, setAmount}) => (
   <View style={styles.headerWrapper}>
-    <Pressable onPress={() => sheetRef.current?.hide()} style={styles.closeBtn}>
+    <Pressable
+      onPress={() => {
+        sheetRef.current?.hide();
+        setAmount('');
+      }}
+      style={styles.closeBtn}>
       <Image source={CloseIcon} />
     </Pressable>
   </View>
 );
 
-const AmountModal = ({amountActionSheetRef, selectedUser}) => {
+const AmountModal = ({amountActionSheetRef, user, transactionType}) => {
+  const [amount, setAmount] = useState('');
+  const dispatch = useDispatch();
+  const {balance} = useSelector(({transaction}) => transaction);
+
+  const getNewBalance = add => {
+    let total;
+    total = add
+      ? parseInt(balance) + parseInt(amount)
+      : parseInt(balance) - parseInt(amount);
+    return total.toString();
+  };
+
+  const completeTransaction = () => {
+    dispatch(
+      addTransaction({
+        ...user,
+        amount,
+        status: transactionType === 'send' ? 'Sent' : 'Received',
+      }),
+    );
+    Toast.show({
+      type: 'success',
+      text1: 'Success',
+      text2: 'Transaction Completed ✅',
+      position: 'bottom',
+      bottomOffset: 120,
+    });
+
+    setTimeout(() => {
+      amountActionSheetRef.current?.hide();
+    }, 1000);
+  };
+
+  const continueTransaction = () => {
+    if (transactionType === 'request') {
+      dispatch(setBalance(getNewBalance(true)));
+      completeTransaction();
+    } else {
+      if (parseInt(balance) > parseInt(amount)) {
+        dispatch(setBalance(getNewBalance(false)));
+        completeTransaction();
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Failed',
+          text2: 'Not enough Balance ❌',
+          position: 'bottom',
+          bottomOffset: 120,
+        });
+      }
+    }
+  };
+
   return (
     <ActionSheet
       ref={amountActionSheetRef}
+      onClose={() => setAmount('')}
       gestureEnabled
       indicatorColor="#4E589F"
       closeOnPressBack
-      CustomHeaderComponent={<Header sheetRef={amountActionSheetRef} />}
+      CustomHeaderComponent={
+        <Header sheetRef={amountActionSheetRef} setAmount={setAmount} />
+      }
       defaultOverlayOpacity={0.6}
       containerStyle={styles.container}>
-      <View style={styles.inputWrapper}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-            marginTop: 60,
-          }}>
-          {numPad.map((item, index) => (
-            <View
-              key={index}
-              style={{
-                padding: 20,
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: width * 0.3,
-                marginBottom: 55,
-              }}>
-              <Text style={{fontSize: 24}}>{item.value}</Text>
-            </View>
-          ))}
+      <View style={styles.keypadWrapper}>
+        <View style={styles.inputWrapper}>
+          <Text style={{fontSize: 50, color: '#FFF', fontWeight: 'bold'}}>
+            &#8377;{' '}
+            {amount === '' ? (
+              <Text style={{fontSize: 64, color: '#FFF'}}> 0.00 </Text>
+            ) : (
+              <Text style={{fontSize: 64, color: '#FFF'}}>
+                {parseFloat(amount).toFixed(2)}
+              </Text>
+            )}
+          </Text>
         </View>
+        <NumPad setAmount={setAmount} amount={amount} />
         <TouchableOpacity
           activeOpacity={0.5}
-          //   onPress={() => amountActionSheetRef.current?.show()}
+          onPress={() => continueTransaction()}
           style={styles.submitBtn}>
           <Text style={styles.btnText}>Continue</Text>
         </TouchableOpacity>
       </View>
+      <Toast config={toastConfig} />
     </ActionSheet>
   );
 };
@@ -114,12 +136,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 40,
     borderTopLeftRadius: 40,
     padding: 10,
-  },
-  inputWrapper: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-    bottom: 40,
+    zIndex: 1,
   },
   headerWrapper: {
     alignItems: 'center',
@@ -129,6 +146,18 @@ const styles = StyleSheet.create({
     position: 'relative',
     zIndex: 99,
     bottom: 60,
+  },
+  keypadWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    bottom: 40,
+  },
+  inputWrapper: {
+    paddingHorizontal: 20,
+    width: width * 0.9,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   closeBtn: {
     width: 20,

@@ -70,7 +70,7 @@ const Intro = ({navigation}) => {
                 </Text>
                 <TouchableOpacity
                   activeOpacity={0.8}
-                  onPress={() => navigation.replace('Dashboard')}
+                  onPress={() => navigation.replace('Home')}
                   style={[
                     styles.carouselBtn,
                     {backgroundColor: !carouselIndex ? '#FFF' : '#17288E'},

@@ -12,66 +12,16 @@ import {
 } from 'react-native';
 import BackIcon from '../../assests/icons/back-icon.png';
 import SearchBg from '../../assests/search-bg.png';
+import userData from '../../Data/userData';
 import AmountModal from './AmountModal';
 import UserModal from './UserModal';
 
 const {width, height} = Dimensions.get('window');
 
-const userData = [
-  {
-    id: 1,
-    name: 'Adeboye Usman',
-    profileUri: require('../../assests/Transaction-Profile/propic-1.png'),
-    number: '(+234) 905 1694 275',
-  },
-  {
-    id: 2,
-    name: 'Mercy Popoola',
-    profileUri: require('../../assests/Transaction-Profile/propic-2.png'),
-    number: '(+234) 905 1694 275',
-  },
-  {
-    id: 3,
-    name: 'Onome Adetayo',
-    profileUri: require('../../assests/Transaction-Profile/propic-3.png'),
-    number: '(+234) 905 1694 275',
-  },
-  {
-    id: 4,
-    name: 'Kingsley Abiodun',
-    profileUri: require('../../assests/Transaction-Profile/propic-4.png'),
-    number: '(+234) 905 1694 275',
-  },
-  {
-    id: 5,
-    name: 'Adeleke Adeyanju',
-    profileUri: require('../../assests/Transaction-Profile/propic-5.png'),
-    number: '(+234) 905 1694 275',
-  },
-  {
-    id: 6,
-    name: 'Aduni Wale',
-    profileUri: require('../../assests/Transaction-Profile/propic-6.png'),
-    number: '(+234) 905 1694 275',
-  },
-  {
-    id: 7,
-    name: 'Adeboye Usman',
-    profileUri: require('../../assests/Transaction-Profile/propic-7.png'),
-    number: '(+234) 905 1694 275',
-  },
-  {
-    id: 8,
-    name: 'Kingsley Abiodun',
-    profileUri: require('../../assests/Transaction-Profile/propic-8.png'),
-    number: '(+234) 905 1694 275',
-  },
-];
-
 const userActionSheetRef = createRef();
 const amountActionSheetRef = createRef();
 
-const Search = ({navigation}) => {
+const Search = ({navigation, route}) => {
   const [search, setSearch] = useState('');
   const [selectedUser, setSelectedUser] = useState(null);
   const [filteredData, setFilteredData] = useState([]);
@@ -84,8 +34,6 @@ const Search = ({navigation}) => {
       setFilteredData(filteredData);
     }
   }, [search]);
-
-  console.log('filteredData', selectedUser);
 
   return (
     <ImageBackground source={SearchBg} style={styles.container}>
@@ -120,7 +68,7 @@ const Search = ({navigation}) => {
                   : {left: Math.floor(Math.random() * (100 - 80 + 1) + 80)},
               ]}>
               <Image
-                source={item.profileUri}
+                source={{uri: item.image}}
                 style={{
                   width: selectedUser && item.id === selectedUser.id ? 72 : 36,
                   height: selectedUser && item.id === selectedUser.id ? 72 : 36,
@@ -148,14 +96,15 @@ const Search = ({navigation}) => {
       </View>
       {selectedUser && (
         <UserModal
-          selectedUser={selectedUser}
+          user={selectedUser}
           userActionSheetRef={userActionSheetRef}
           amountActionSheetRef={amountActionSheetRef}
         />
       )}
       <AmountModal
+        user={selectedUser}
         amountActionSheetRef={amountActionSheetRef}
-        selectedUser={selectedUser}
+        transactionType={route.params?.transactionType}
       />
     </ImageBackground>
   );

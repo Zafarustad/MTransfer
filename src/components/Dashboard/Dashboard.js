@@ -1,29 +1,43 @@
 import React from 'react';
-import {View, Text, StyleSheet, StatusBar, Pressable} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {
+  View,
+  Text,
+  StyleSheet,
+  StatusBar,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import TransactionList from './TransactionList';
+import {useSelector} from 'react-redux';
+import BurgerMenu from '../../assests/icons/burger-menu.png';
 
 const DashBoard = ({navigation}) => {
+  const {balance} = useSelector(({transaction}) => transaction);
+
   return (
     <View style={styles.container}>
       <StatusBar hidden={false} backgroundColor={'#010A43'} />
       <View style={styles.headerSection}>
-        <Text style={{color: '#FFF', fontWeight: 'bold', fontSize: 25}}>
-          Hello Sandra,
-        </Text>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={() => navigation.openDrawer()}
+          style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Image source={BurgerMenu} style={styles.menuIcon} />
+          <Text style={styles.username}>Hello Sandra,</Text>
+        </TouchableOpacity>
         <View style={styles.addMoney}>
           <Text style={{color: '#426DDC'}}>Add money</Text>
         </View>
       </View>
       <View style={styles.balanceSection}>
         <Text style={styles.balanceText}>Your current balance is</Text>
-        <Text style={styles.currBal}>&#8377; 200,000</Text>
+        <Text style={styles.currBal}>&#8377; {balance}</Text>
       </View>
       <View style={styles.makeTransactionSection}>
         <TouchableOpacity
           activeOpacity={0.5}
           onPress={() =>
-            navigation.navigate('Search', {transactionType: 'send'})
+            navigation.navigate('Search', {transactionType: 'request'})
           }
           style={[styles.transactionBtn, {marginRight: 30}]}>
           <Text style={styles.btnText}>Request Money</Text>
@@ -31,7 +45,7 @@ const DashBoard = ({navigation}) => {
         <TouchableOpacity
           activeOpacity={0.5}
           onPress={() =>
-            navigation.navigate('Search', {transactionType: 'request'})
+            navigation.navigate('Search', {transactionType: 'send'})
           }
           style={styles.transactionBtn}>
           <Text style={styles.btnText}>Send Money</Text>
@@ -55,6 +69,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 30,
+  },
+  menuIcon: {
+    width: 48,
+    height: 48,
+    marginRight: 10,
+  },
+  username: {
+    color: '#FFF',
+    fontWeight: 'bold',
+    fontSize: 25,
   },
   addMoney: {
     backgroundColor: '#212A6B',

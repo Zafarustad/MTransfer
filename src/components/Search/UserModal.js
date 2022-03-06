@@ -11,11 +11,7 @@ import ActionSheet from 'react-native-actions-sheet';
 
 const {height} = Dimensions.get('window');
 
-const UserModal = ({
-  selectedUser,
-  userActionSheetRef,
-  amountActionSheetRef,
-}) => {
+const UserModal = ({user, userActionSheetRef, amountActionSheetRef}) => {
   return (
     <ActionSheet
       ref={userActionSheetRef}
@@ -26,7 +22,7 @@ const UserModal = ({
       containerStyle={styles.modalContainer}>
       <View style={{alignItems: 'center', justifyContent: 'center'}}>
         <Image
-          source={selectedUser.profileUri}
+          source={{uri: user.image}}
           style={{
             width: 72,
             height: 72,
@@ -34,8 +30,8 @@ const UserModal = ({
             marginTop: 10,
           }}
         />
-        <Text style={{fontSize: 20, marginTop: 10}}>{selectedUser.name}</Text>
-        <Text style={{marginTop: 20}}>{selectedUser.number}</Text>
+        <Text style={{fontSize: 20, marginTop: 10}}>{user.name}</Text>
+        <Text style={{marginTop: 20}}>{user.number}</Text>
         <TouchableOpacity
           activeOpacity={0.5}
           onPress={() => amountActionSheetRef.current?.show()}

@@ -7,32 +7,28 @@ import SentIcon from '../../assests/icons/sent-icon.png';
 const TransactionCard = ({item, index}) => {
   return (
     <View
-      style={{
-        justifyContent: 'space-between',
-        padding: 20,
-        flexDirection: 'row',
-        backgroundColor: (index + 1) % 2 !== 0 ? '#192259' : '',
-      }}>
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <Image source={item.profileUri} style={{width: 50, height: 50}} />
+      style={[
+        styles.cardContainer,
+        {
+          backgroundColor: (index + 1) % 2 !== 0 ? '#192259' : '',
+        },
+      ]}>
+      <View style={styles.cardWrapper}>
+        <Image source={{uri: item.image}} style={styles.userImg} />
         <View style={{marginLeft: 10}}>
-          <Text style={{fontSize: 16, color: '#858EC5', marginBottom: 7}}>
-            {item.name}
-          </Text>
+          <Text style={styles.name}>{item.name}</Text>
           <View
-            style={{
-              flexDirection: 'row',
-              borderRadius: 20,
-              height: 28,
-              backgroundColor:
-                item.status === 'Received'
-                  ? '#1DC7AC'
-                  : item.status === 'Failed'
-                  ? '#FE4A54'
-                  : '#FAAD39',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-            }}>
+            style={[
+              styles.tag,
+              {
+                backgroundColor:
+                  item.status === 'Received'
+                    ? '#1DC7AC'
+                    : item.status === 'Failed'
+                    ? '#FE4A54'
+                    : '#FAAD39',
+              },
+            ]}>
             <Image
               source={
                 item.status === 'Received'
@@ -41,12 +37,7 @@ const TransactionCard = ({item, index}) => {
                   ? FailedIcon
                   : SentIcon
               }
-              style={{
-                width: 16,
-                height: 16,
-                marginRight: 5,
-                marginLeft: 7,
-              }}
+              style={styles.status}
             />
             <Text style={{color: '#FFF'}}>{item.status}</Text>
           </View>
@@ -70,3 +61,38 @@ const TransactionCard = ({item, index}) => {
 };
 
 export default TransactionCard;
+
+const styles = StyleSheet.create({
+  cardContainer: {
+    justifyContent: 'space-between',
+    padding: 20,
+    flexDirection: 'row',
+  },
+  cardWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  userImg: {
+    width: 50,
+    height: 50,
+    borderRadius: 100,
+  },
+  tag: {
+    flexDirection: 'row',
+    borderRadius: 20,
+    height: 28,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  name: {
+    fontSize: 16,
+    color: '#858EC5',
+    marginBottom: 7,
+  },
+  status: {
+    width: 16,
+    height: 16,
+    marginRight: 5,
+    marginLeft: 7,
+  },
+});
