@@ -86,7 +86,12 @@ const Requests = ({navigation}) => {
           </View>
           <Text style={styles.name}>{requests[0].name}</Text>
           <Text style={styles.requestingFor}>is requesting for:</Text>
-          <Text style={styles.amount}>&#8377; {requests[0].amount}</Text>
+          <Text style={styles.amount}>
+            &#8377;{' '}
+            {requests[0].amount
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+          </Text>
           <View style={styles.makeTransactionSection}>
             <TouchableOpacity
               activeOpacity={0.5}

@@ -54,7 +54,7 @@ const TransactionCard = ({item, index}) => {
               ? '#FE4A54'
               : '#FAAD39',
         }}>
-        &#8377; {item.amount}
+        &#8377; {item.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
       </Text>
     </View>
   );

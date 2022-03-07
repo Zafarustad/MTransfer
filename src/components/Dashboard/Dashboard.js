@@ -31,7 +31,9 @@ const DashBoard = ({navigation}) => {
       </View>
       <View style={styles.balanceSection}>
         <Text style={styles.balanceText}>Your current balance is</Text>
-        <Text style={styles.currBal}>&#8377; {balance}</Text>
+        <Text style={styles.currBal}>
+          &#8377; {balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+        </Text>
       </View>
       <View style={styles.makeTransactionSection}>
         <TouchableOpacity
