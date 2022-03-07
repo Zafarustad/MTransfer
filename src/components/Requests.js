@@ -15,7 +15,7 @@ import {nanoid} from '@reduxjs/toolkit';
 import Toast from 'react-native-toast-message';
 import {useSelector} from 'react-redux';
 
-const {width} = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 const Requests = ({navigation}) => {
   const dispatch = useDispatch();
@@ -30,7 +30,7 @@ const Requests = ({navigation}) => {
   const {balance} = useSelector(({transaction}) => transaction);
 
   const sendMoney = () => {
-    if (parseInt(balance) > parseInt(requests[0].amount)) {
+    if (parseInt(balance) >= parseInt(requests[0].amount)) {
       dispatch(addTransaction({...requests[0], status: 'sent'}));
       dispatch(setBalance(parseInt(balance) - parseInt(requests[0].amount)));
       Toast.show({
@@ -38,7 +38,7 @@ const Requests = ({navigation}) => {
         text1: 'Success',
         text2: 'Transaction Completed ✅',
         position: 'bottom',
-        bottomOffset: 120,
+        bottomOffset: 20,
       });
       setRequests([]);
     } else {
@@ -47,7 +47,7 @@ const Requests = ({navigation}) => {
         text1: 'Failed',
         text2: 'Not enough Balance ❌',
         position: 'bottom',
-        bottomOffset: 120,
+        bottomOffset: 20,
       });
     }
   };
@@ -59,7 +59,7 @@ const Requests = ({navigation}) => {
       text1: 'Success',
       text2: 'Request Removed ✅',
       position: 'bottom',
-      bottomOffset: 120,
+      bottomOffset: 20,
     });
   };
 
@@ -96,13 +96,16 @@ const Requests = ({navigation}) => {
             <TouchableOpacity
               activeOpacity={0.5}
               onPress={() => sendMoney()}
-              style={[styles.transactionBtn, {backgroundColor: '#FF2E63'}]}>
+              style={[
+                styles.transactionBtn,
+                {backgroundColor: '#FF2E63', borderWidth: 0},
+              ]}>
               <Text style={[styles.btnText, {color: '#FFF'}]}>Send Money</Text>
             </TouchableOpacity>
             <TouchableOpacity
               activeOpacity={0.5}
               onPress={() => cancelRequest()}
-              style={styles.transactionBtn}>
+              style={[styles.transactionBtn, {marginTop: 24}]}>
               <Text style={styles.btnText}>Don't Money</Text>
             </TouchableOpacity>
           </View>
@@ -120,7 +123,8 @@ export default Requests;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: width,
+    height: height,
     alignItems: 'center',
     backgroundColor: '#010A43',
     paddingHorizontal: 20,
@@ -129,20 +133,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     marginTop: 40,
     width: width,
   },
   headerTxt: {
     fontSize: 18,
-    marginLeft: 55,
     color: '#FFF',
+    textAlign: 'center',
   },
   backCont: {
     alignItems: 'center',
-    marginRight: 10,
     width: '20%',
     flexDirection: 'row',
     alignSelf: 'flex-start',
+    position: 'absolute',
+    left: 20,
   },
   backIcon: {
     width: 10,
@@ -159,24 +165,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   outerCircle: {
-    width: 250,
-    height: 250,
+    width: 200,
+    height: 200,
     backgroundColor: '#10194E',
-    borderRadius: 150,
+    borderRadius: 100,
     justifyContent: 'center',
     alignItems: 'center',
   },
   innerCircle: {
-    width: 200,
-    height: 200,
+    width: 150,
+    height: 150,
     backgroundColor: '#192259',
     borderRadius: 150,
     justifyContent: 'center',
     alignItems: 'center',
   },
   userImg: {
-    width: 150,
-    height: 150,
+    width: 100,
+    height: 100,
     borderRadius: 150,
   },
   name: {
@@ -187,13 +193,13 @@ const styles = StyleSheet.create({
   requestingFor: {
     fontSize: 14,
     textAlign: 'center',
-    marginTop: 30,
+    marginTop: 20,
     color: '#FFF',
   },
   amount: {
     fontSize: 40,
     textAlign: 'center',
-    marginTop: 30,
+    marginTop: 20,
     fontWeight: 'bold',
     color: '#FFF',
   },
@@ -203,9 +209,10 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   transactionBtn: {
-    width: 170,
-    marginTop: 20,
-    padding: 25,
+    width: 150,
+    marginTop: 10,
+    padding: 5,
+    height: 60,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,

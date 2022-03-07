@@ -85,10 +85,13 @@ const Intro = ({navigation}) => {
                 </TouchableOpacity>
               </View>
             )}
+            autoplay
+            loop
+            enableSnap
             sliderWidth={250}
             itemWidth={240}
-            sliderHeight={200}
-            itemHeight={200}
+            sliderHeight={250}
+            itemHeight={250}
           />
         </View>
       </ImageBackground>
@@ -114,7 +117,7 @@ const styles = StyleSheet.create({
     padding: 30,
     position: 'absolute',
     bottom: 0,
-    left: -85,
+    left: -65,
     borderTopRightRadius: 130,
     justifyContent: 'center',
     alignItems: 'center',
@@ -124,21 +127,21 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   carouselMainText: {
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: 'bold',
   },
   carouselSubtext: {
-    fontSize: 15,
-    marginTop: 10,
+    fontSize: 12,
+    marginTop: 5,
     lineHeight: 25,
   },
   carouselBtn: {
     width: 120,
     marginTop: 10,
-    padding: 12,
+    padding: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 10,
+    borderRadius: 5,
   },
   btnText: {
     fontSize: 14,

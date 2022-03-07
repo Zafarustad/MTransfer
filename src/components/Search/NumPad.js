@@ -61,6 +61,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: Dimensions.get('window').width * 0.3,
-    marginBottom: 55,
+    marginBottom: 25,
   },
 });

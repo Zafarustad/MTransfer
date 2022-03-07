@@ -31,7 +31,7 @@ const UserModal = ({user, userActionSheetRef, amountActionSheetRef}) => {
           }}
         />
         <Text style={{fontSize: 20, marginTop: 10}}>{user.name}</Text>
-        <Text style={{marginTop: 20}}>{user.number}</Text>
+        <Text style={{marginTop: 20, fontSize: 14}}>{user.number}</Text>
         <TouchableOpacity
           activeOpacity={0.5}
           onPress={() => amountActionSheetRef.current?.show()}
@@ -48,7 +48,7 @@ export default UserModal;
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    height: height * 0.35,
+    height: height * 0.45,
     backgroundColor: '#10194E',
     borderTopRightRadius: 40,
     borderTopLeftRadius: 40,
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   continueBtn: {
     width: 150,
     marginTop: 30,
-    padding: 20,
+    height: 60,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,

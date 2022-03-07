@@ -73,7 +73,7 @@ const AmountModal = ({amountActionSheetRef, user, transactionType}) => {
       dispatch(setBalance(getNewBalance(true)));
       completeTransaction();
     } else {
-      if (parseInt(balance) > parseInt(amount)) {
+      if (parseInt(balance) >= parseInt(amount)) {
         dispatch(setBalance(getNewBalance(false)));
         completeTransaction();
       } else {
@@ -170,8 +170,8 @@ const styles = StyleSheet.create({
   },
   submitBtn: {
     width: 150,
-    marginTop: 30,
-    padding: 20,
+    marginTop: 15,
+    height: 60,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,

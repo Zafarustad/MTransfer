@@ -13,7 +13,6 @@ const TransactionList = () => {
       <View style={styles.hLine} />
       <View style={styles.sortSection}>
         <Text style={{fontSize: 16}}>All Transaction</Text>
-        <Text style={{fontSize: 16}}>Sort By</Text>
       </View>
       <FlatList
         data={transactions}
@@ -30,7 +29,7 @@ export default TransactionList;
 
 const styles = StyleSheet.create({
   wrapper: {
-    marginTop: 50,
+    marginTop: 30,
     paddingTop: 5,
     backgroundColor: '#10194E',
     flex: 1,

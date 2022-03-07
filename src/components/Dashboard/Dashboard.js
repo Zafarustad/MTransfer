@@ -6,10 +6,13 @@ import {
   StatusBar,
   TouchableOpacity,
   Image,
+  Dimensions,
 } from 'react-native';
 import TransactionList from './TransactionList';
 import {useSelector} from 'react-redux';
 import BurgerMenu from '../../assests/icons/burger-menu.png';
+
+const {width, height} = Dimensions.get('window');
 
 const DashBoard = ({navigation}) => {
   const {balance} = useSelector(({transaction}) => transaction);
@@ -80,7 +83,7 @@ const styles = StyleSheet.create({
   username: {
     color: '#FFF',
     fontWeight: 'bold',
-    fontSize: 25,
+    fontSize: 20,
   },
   addMoney: {
     backgroundColor: '#212A6B',
@@ -100,18 +103,20 @@ const styles = StyleSheet.create({
   currBal: {
     color: '#FFF',
     fontWeight: 'bold',
-    fontSize: 60,
+    fontSize: 40,
     marginTop: 5,
   },
   makeTransactionSection: {
     alignItems: 'center',
     flexDirection: 'row',
+    justifyContent: 'center',
     marginTop: 30,
   },
   transactionBtn: {
-    width: 170,
+    width: 150,
     marginTop: 10,
-    padding: 25,
+    padding: 5,
+    height: 60,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
